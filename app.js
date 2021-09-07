@@ -5,10 +5,12 @@ const background = document.querySelector('.background');
 /* Stepper */
 const stepper = document.querySelector('#stepper');
 
+const stepsRef = document.querySelector('#stepperRef');
+
 let isDragging = false;
 let currentSelectorPosition = 0;
 
-let steps = [5, 6, 7, 8, 9, 10, 11, 12];
+let steps = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 let currentStep = 0;
 
 stepper.innerHTML = `${steps[currentStep]}`;
@@ -17,9 +19,11 @@ stepper.innerHTML = `${steps[currentStep]}`;
 const convertStepToPercent = (stepIndex) => {
 	/* Rests -1 to the list, do the list starts at 0. Pc things */
 	const stepsLenght = steps.length - 1;
+	const data = Math.floor((1 / stepsLenght) * 100);
 
+	console.log(data);
 	/* Do a 3 rule, multiply the index of the gived step * 100 and divide it into stepsLenght */
-	return (stepIndex * 100) / stepsLenght;
+	return data * stepIndex;
 };
 
 /**Converts the actual given position in pixels to percentage */
@@ -28,8 +32,24 @@ const convertPositionToPercent = (currentPos) => {
 	const lenght = slider.getBoundingClientRect().width;
 
 	/* Do a 3 rule, multiply the current position in pixels * 100 and divide it into the lenght of the box */
-	return (currentPos * 100) / lenght;
+	return (currentPos / lenght) * 100;
 };
+
+/* DOOMIE  */
+
+for (let step of steps) {
+	const stepData = Math.floor(convertStepToPercent(1));
+
+	console.log(convertStepToPercent(steps.indexOf(step)));
+
+	const stepTag = document.createElement('div');
+	stepTag.innerText = `${steps[steps.indexOf(step)]}`;
+
+	/* 	if (steps.indexOf(step) !== 0)
+		stepTag.style.marginLeft = `${Math.round(convertStepToPercent(1))}%`; */
+
+	stepsRef.appendChild(stepTag);
+}
 
 selector.addEventListener('mousedown', (event) => {
 	isDragging = true;
@@ -46,11 +66,12 @@ window.addEventListener('mousemove', (event) => {
 		const movement = event.movementX;
 
 		/* Saves the prev step necesary percentage to achive it */
-		const prevStep = convertStepToPercent(currentStep - 1);
+		const prevStep = Math.round(convertStepToPercent(currentStep - 1));
 
 		/* Saves the next step necesary percentage to achive it */
-		const nextStep = convertStepToPercent(currentStep + 1);
+		const nextStep = Math.round(convertStepToPercent(currentStep + 1));
 
+		console.log(nextStep);
 		/* Checks if the movement is to the right (1) or left (-1) */
 		if (movement >= 1) {
 			currentSelectorPosition += movement;
@@ -59,7 +80,7 @@ window.addEventListener('mousemove', (event) => {
 		}
 
 		/* Gets the current position to percentage */
-		let pos = convertPositionToPercent(currentSelectorPosition);
+		let pos = Math.fround(convertPositionToPercent(currentSelectorPosition));
 
 		/* Limits the movement foward 0%, and below 100% */
 		if (pos < 0) {

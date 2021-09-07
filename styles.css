@@ -54,6 +54,7 @@ main {
 	left: 0;
 
 	transform: translate(-50%, -50%);
+	transform-origin: left;
 
 	cursor: grab;
 }
@@ -103,5 +104,24 @@ main {
 }
 
 .title {
+	text-align: center;
+}
+
+/* StEEPER */
+.stepper {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 70%;
+
+	background-color: #d67ab1;
+
+	color: white;
+
+	padding: 1rem;
+}
+
+.stepper > * {
+	width: 16px;
 	text-align: center;
 }
